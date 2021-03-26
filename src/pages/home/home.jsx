@@ -12,14 +12,19 @@ import "./css/home.css";
 
 class ScaleBox extends Component {
   render() {
-    var { label, value, onChange } = this.props;
+    var { label, value, onChange, s } = this.props;
     return (
       <table className="scale-box">
         <tbody>
           <tr>
             <td>{label}</td>
             <td>
-              <input type="number" value={value} onChange={onChange} />
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => onChange(s, e)}
+                min={1}
+              />
             </td>
           </tr>
         </tbody>
@@ -40,6 +45,18 @@ class Home extends Component {
     maxAge: 200,
     noParticles: 10000,
     fadeOutPercentage: 0.1,
+    update: false,
+    mesh: true,
+    lake: "geneva",
+    lakeOptions: ["geneva", "zurich"],
+  };
+
+  update = () => {
+    this.setState({ update: true });
+  };
+
+  onChangeState = (name, event) => {
+    this.setState({ [name]: event.target.value });
   };
 
   downloadLake = async (name) => {
@@ -267,14 +284,17 @@ class Home extends Component {
       minVelocity,
       maxVelocity,
       colorbar,
+      maxAge,
+      fadeOutPercentage,
     } = this.state;
+    var fadeOut = Math.round(maxAge * fadeOutPercentage);
     var pl = randomPick.length - 1;
     var line_len = this.lines.length;
     for (let i = 0; i < line_len; i++) {
       let line = this.lines[i];
       let positions = line.data.geometry.attributes.position.array;
       let colors = line.data.geometry.attributes.color.array;
-      if (line.age < line.maxAge - this.fadeOut) {
+      if (line.age < line.maxAge - fadeOut) {
         // Move to next position
         line.age++;
         var nextposition = this.nextPosition(
@@ -303,7 +323,7 @@ class Home extends Component {
           line.data.geometry.setDrawRange(0, line.age);
           line.data.geometry.attributes.position.needsUpdate = true;
         } else {
-          line.age = line.maxAge - this.fadeOut;
+          line.age = line.maxAge - fadeOut;
         }
       } else if (line.age < line.maxAge) {
         // Fade out line
@@ -318,9 +338,7 @@ class Home extends Component {
       } else {
         // Reset particle location
         line.age = 0;
-        line.maxAge =
-          Math.round((this.maxAge - this.fadeOut) * Math.random()) +
-          this.fadeOut;
+        line.maxAge = Math.round((maxAge - fadeOut) * Math.random()) + fadeOut;
         let pick = randomPick[Math.round(pl * Math.random())];
         positions[0] = arr[pick[0]][0]; // x
         positions[1] = depths[pick[1]]; // z
@@ -329,7 +347,7 @@ class Home extends Component {
         positions[3] = positions[0] + 0.1;
         positions[4] = positions[1] + 0.1;
         positions[5] = positions[2] + 0.1;
-        for (let c = 0; c < this.maxAge * 4; c++) {
+        for (let c = 0; c < maxAge * 4; c++) {
           colors[c] = 1;
         }
         line.data.geometry.setDrawRange(0, line.age);
@@ -376,13 +394,8 @@ class Home extends Component {
   };
 
   sceneSetup = () => {
-    var { maxAge, noParticles, fadeOutPercentage } = this.state;
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
-
-    this.maxAge = maxAge;
-    this.noParticles = noParticles;
-    this.fadeOut = Math.round(this.maxAge * fadeOutPercentage);
 
     this.scene = new THREE.Scene();
     //this.scene.background = new THREE.Color(0x000000);
@@ -401,13 +414,79 @@ class Home extends Component {
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
 
+    var light = new THREE.AmbientLight(0x404040);
+    this.scene.add(light);
+
     this.stats = new Stats();
     //this.stats.showPanel( 1 );
     document.body.appendChild(this.stats.domElement);
   };
 
-  addCustomSceneObjects = () => {
+  addMesh = () => {
     var { bottomSurface } = this.state;
+    var points3d = [];
+    for (let i = 0; i < bottomSurface.length; i++) {
+      points3d.push(
+        new THREE.Vector3(
+          bottomSurface[i].x,
+          bottomSurface[i].z,
+          -bottomSurface[i].y
+        )
+      );
+    }
+
+    var lakegeometry = new THREE.BufferGeometry().setFromPoints(points3d);
+
+    var indexDelaunay = Delaunator.from(
+      points3d.map((v) => {
+        return [v.x, v.z];
+      })
+    );
+
+    // Remove triangle with vertex over certain length
+    indexDelaunay = this.removeOuterTriangles(indexDelaunay, 2);
+
+    var meshIndex = []; // delaunay index => three.js index
+    for (let i = 0; i < indexDelaunay.triangles.length; i++) {
+      meshIndex.push(indexDelaunay.triangles[i]);
+    }
+
+    lakegeometry.setIndex(meshIndex);
+    this.mesh = new THREE.Mesh(
+      lakegeometry, // re-use the existing geometry
+      new THREE.MeshBasicMaterial({
+        color: "white",
+        wireframe: false,
+        transparent: true,
+        opacity: 0.08,
+        depthWrite: false,
+      })
+    );
+    this.scene.add(this.mesh);
+  };
+
+  toggleMesh = () => {
+    var { mesh } = this.state;
+    if (this.mesh.visible) {
+      mesh = false;
+    } else {
+      mesh = true;
+    }
+    this.mesh.visible = mesh;
+    this.setState({ mesh });
+  };
+
+  removeMesh = () => {
+    try {
+      this.scene.remove(this.mesh);
+    } catch (e) {
+      console.error("Failed to remove mesh", e);
+    }
+  };
+
+  addStreamlines = () => {
+    var { noParticles, maxAge, fadeOutPercentage } = this.state;
+
     var vertexShader = `
       precision mediump float;
       precision mediump int;
@@ -437,63 +516,19 @@ class Home extends Component {
       }
     `;
 
-    // Lake Mesh
-    var points3d = [];
-    for (let i = 0; i < bottomSurface.length; i++) {
-      points3d.push(
-        new THREE.Vector3(
-          bottomSurface[i].x,
-          bottomSurface[i].z,
-          -bottomSurface[i].y
-        )
-      );
-    }
-
-    var lakegeometry = new THREE.BufferGeometry().setFromPoints(points3d);
-
-    var indexDelaunay = Delaunator.from(
-      points3d.map((v) => {
-        return [v.x, v.z];
-      })
-    );
-
-    // Remove triangle with vertex over certain length
-    indexDelaunay = this.removeOuterTriangles(indexDelaunay, 2);
-
-    var meshIndex = []; // delaunay index => three.js index
-    for (let i = 0; i < indexDelaunay.triangles.length; i++) {
-      meshIndex.push(indexDelaunay.triangles[i]);
-    }
-
-    lakegeometry.setIndex(meshIndex);
-    var mesh = new THREE.Mesh(
-      lakegeometry, // re-use the existing geometry
-      new THREE.MeshBasicMaterial({
-        color: "white",
-        wireframe: false,
-        transparent: true,
-        opacity: 0.08,
-        depthWrite: false,
-      })
-    );
-    this.scene.add(mesh);
-
-    // geometry
+    var fadeOut = Math.round(maxAge * fadeOutPercentage);
     var geometry = new THREE.BufferGeometry();
 
-    var colors = new Array(this.maxAge * 4).fill(1);
+    var colors = new Array(maxAge * 4).fill(1);
     geometry.setAttribute(
       "color",
       new THREE.Float32BufferAttribute(colors, 4, true)
     );
 
-    var positions = new Float32Array(this.maxAge * 3); // 3 vertices per point
+    var positions = new Float32Array(maxAge * 3); // 3 vertices per point
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-    // Set draw range
     geometry.setDrawRange(0, 0);
 
-    // Material
     var material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
@@ -501,25 +536,28 @@ class Home extends Component {
       blending: THREE.AdditiveBlending,
       depthTest: false,
     });
+
     this.lines = [];
 
-    for (var p = 0; p < this.noParticles; p++) {
+
+    for (var p = 0; p < noParticles; p++) {
       let line = new THREE.Line(geometry.clone(), material.clone());
       this.lines.push({
         data: line,
         age: 0,
-        maxAge:
-          Math.round((this.maxAge - this.fadeOut) * Math.random()) +
-          this.fadeOut,
+        maxAge: Math.round((maxAge - fadeOut) * Math.random()) + fadeOut,
       });
       this.scene.add(line);
     }
 
     // update positions
     this.initialPositions();
+  };
 
-    var light = new THREE.AmbientLight(0x404040);
-    this.scene.add(light);
+  removeStreamlines = () => {
+    for (var line of this.lines) {
+      this.scene.remove(line.data);
+    }
   };
 
   startAnimationLoop = () => {
@@ -529,15 +567,7 @@ class Home extends Component {
     this.stats.update();
   };
 
-  async componentDidMount() {
-    var lake = "geneva";
-    var url_lake = this.props.location.pathname.split("/").slice(-1)[0];
-    if (["zurich", "geneva"].includes(url_lake)) {
-      lake = url_lake;
-    }
-
-    var { quadtreeSensitivity } = this.state;
-
+  prepareData = async (quadtreeSensitivity, lake) => {
     var { depths, arr } = await this.downloadLake(lake);
     ({ depths, arr } = this.globalToLocalCoordinate(depths, arr));
     var colorbar = this.generateColorBar(arr);
@@ -559,6 +589,50 @@ class Home extends Component {
       quadtree,
     } = this.dataToGrid(arr, quadtreeSensitivity);
 
+    var subtext = document.getElementById("subtext");
+    subtext.innerHTML = "Plotting velocity field... ";
+    subtext.classList.add("fade-out");
+    document.getElementById("text").classList.add("fade-out");
+    return {
+      nCols,
+      nRows,
+      xSize,
+      ySize,
+      xllcorner,
+      yllcorner,
+      griddata,
+      arr,
+      depths,
+      randomPick,
+      bottomSurface,
+      quadtree,
+      colorbar,
+      minVelocity,
+      maxVelocity,
+    };
+  };
+
+  async componentDidMount() {
+    var { quadtreeSensitivity, lake } = this.state;
+
+    var {
+      nCols,
+      nRows,
+      xSize,
+      ySize,
+      xllcorner,
+      yllcorner,
+      griddata,
+      arr,
+      depths,
+      randomPick,
+      bottomSurface,
+      quadtree,
+      colorbar,
+      minVelocity,
+      maxVelocity,
+    } = await this.prepareData(quadtreeSensitivity, lake);
+
     this.setState(
       {
         nCols,
@@ -578,17 +652,13 @@ class Home extends Component {
         maxVelocity,
       },
       () => {
-        var subtext = document.getElementById("subtext");
-        subtext.innerHTML = "Plotting velocity field... ";
-        subtext.classList.add("fade-out");
-        document.getElementById("text").classList.add("fade-out");
         setTimeout(() => {
           this.setState({ loaded: true });
         }, 2000);
         this.sceneSetup();
-        this.addCustomSceneObjects();
+        this.addMesh();
+        this.addStreamlines();
         this.startAnimationLoop();
-
         window.addEventListener("resize", this.handleWindowResize);
       }
     );
@@ -600,8 +670,25 @@ class Home extends Component {
     this.controls.dispose();
   }
 
+  async componentDidUpdate(prevState) {
+    var { update } = this.state;
+    if (update) {
+      this.removeStreamlines();
+      this.setState({ update: false });
+    }
+  }
+
   render() {
-    var { loaded, xScale, yScale, zScale, noParticles, velocityFactor, maxAge } = this.state;
+    var {
+      loaded,
+      xScale,
+      yScale,
+      zScale,
+      noParticles,
+      velocityFactor,
+      maxAge,
+      mesh,
+    } = this.state;
     document.title = "Dynamic Lakes";
     return (
       <React.Fragment>
@@ -613,18 +700,62 @@ class Home extends Component {
               <div className="plotparameters">
                 <div className="plotrow">
                   Scale
-                  <ScaleBox label="x" value={xScale} />
-                  <ScaleBox label="y" value={yScale} />
-                  <ScaleBox label="z" value={zScale} />
+                  <ScaleBox
+                    s="xScale"
+                    label="x"
+                    value={xScale}
+                    onChange={this.onChangeState}
+                  />
+                  <ScaleBox
+                    s="yScale"
+                    label="y"
+                    value={yScale}
+                    onChange={this.onChangeState}
+                  />
+                  <ScaleBox
+                    s="zScale"
+                    label="z"
+                    value={zScale}
+                    onChange={this.onChangeState}
+                  />
                 </div>
                 <div className="plotrow">
-                  Streams <input type="number" value={noParticles} />
+                  View Boundary
+                  <input
+                    type="checkbox"
+                    checked={mesh}
+                    onChange={this.toggleMesh}
+                  />
                 </div>
                 <div className="plotrow">
-                  Velocity <input type="number" value={velocityFactor} />
+                  Streams{" "}
+                  <input
+                    min={1}
+                    type="number"
+                    value={noParticles}
+                    onChange={(e) => this.onChangeState("noParticles", e)}
+                  />
                 </div>
                 <div className="plotrow">
-                  Max Age <input type="number" value={maxAge} />
+                  Velocity{" "}
+                  <input
+                    min={1}
+                    type="number"
+                    value={velocityFactor}
+                    onChange={(e) => this.onChangeState("velocityFactor", e)}
+                  />
+                </div>
+                <div className="plotrow">
+                  Max Age{" "}
+                  <input
+                    min={1}
+                    type="number"
+                    value={maxAge}
+                    onChange={(e) => this.onChangeState("maxAge", e)}
+                  />
+                </div>
+                <div className="plotrow">
+                  <button onClick={this.update}>Update Plot</button>
                 </div>
               </div>
             </div>

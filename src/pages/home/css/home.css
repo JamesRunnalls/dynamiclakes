@@ -18,6 +18,19 @@
   text-align: right;
 }
 
+.main .about .plotparameters .plotrow button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  width: 150px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.main .about .plotparameters .plotrow button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .main .about .plotparameters .plotrow input {
   border: 1px solid white;
   background-color: transparent;
