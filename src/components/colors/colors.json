@@ -1,0 +1,684 @@
+[
+    {
+      "name": "Rainbow",
+      "data": [
+        { "color": "#000080", "point": 0 },
+        { "color": "#3366FF", "point": 0.142857142857143 },
+        { "color": "#00B0DC", "point": 0.285714285714286 },
+        { "color": "#009933", "point": 0.428571428571429 },
+        { "color": "#FFFF5B", "point": 0.571428571428571 },
+        { "color": "#E63300", "point": 0.714285714285714 },
+        { "color": "#CC0000", "point": 0.857142857142857 },
+        { "color": "#800000", "point": 1 }
+      ]
+    },
+    {
+      "name": "Blue Red",
+      "data": [
+        { "color": "#0000ff", "point": 0 },
+        { "color": "#ff0000", "point": 1 }
+      ]
+    },
+    {
+      "name": "Kompsat color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cc chl",
+      "data": [
+        { "color": "#000080", "point": 0.0 },
+        { "color": "#3366ff", "point": 0.0033388981636060114 },
+        { "color": "#00b0dc", "point": 0.015025041736227053 },
+        { "color": "#009933", "point": 0.04006677796327214 },
+        { "color": "#ffff5b", "point": 0.0818030050083473 },
+        { "color": "#e63300", "point": 0.16527545909849758 },
+        { "color": "#cc0000", "point": 0.4156928213689484 },
+        { "color": "#800000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris cloud",
+      "data": [
+        { "color": "#00ffff", "point": 0.0 },
+        { "color": "#00ff00", "point": 0.1891891891891892 },
+        { "color": "#ffff00", "point": 0.4594594594594595 },
+        { "color": "#ff8c00", "point": 0.7297297297297297 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "spectrum",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#550088", "point": 0.14285714285714285 },
+        { "color": "#0000ff", "point": 0.2857142857142857 },
+        { "color": "#00ffff", "point": 0.42857142857142855 },
+        { "color": "#00ff00", "point": 0.5714285714285714 },
+        { "color": "#ffff00", "point": 0.7142857142857143 },
+        { "color": "#ff8c00", "point": 0.8571428571428571 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "Paraview",
+      "data": [
+        {"color": "#3B4CC0", "point": 0},
+        {"color": "#5D7CE6", "point": 0.001},
+        {"color": "#83A6FB", "point": 0.002},
+        {"color": "#AAC7FD", "point": 0.003},
+        {"color": "#FFFFFF", "point": 0.004},
+        {"color": "#EAD4C8", "point": 0.005},
+        {"color": "#F7B89C", "point": 0.006},
+        {"color": "#F18E70", "point": 0.007},
+        {"color": "#DA5948", "point": 0.008},
+        {"color": "#B40426", "point": 0.009},
+        {"color": "#B40426", "point": 1}
+      ]
+    },
+    {
+      "name": "gradient black to red",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "wew water wlr",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.010989010989010993 },
+        { "color": "#00ffff", "point": 0.1758241758241758 },
+        { "color": "#00ff00", "point": 0.34065934065934067 },
+        { "color": "#ffff00", "point": 0.5054945054945055 },
+        { "color": "#ff0000", "point": 0.6703296703296704 },
+        { "color": "#ff0000", "point": 0.8901098901098901 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "Deimos color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.42857142857142855 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient 8 colors",
+      "data": [
+        { "color": "#ffffff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.08606604619693696 },
+        { "color": "#0000ff", "point": 0.16796875167968756 },
+        { "color": "#33ffff", "point": 0.2476609859714234 },
+        { "color": "#33ffff", "point": 0.3085937530859375 },
+        { "color": "#006600", "point": 0.3945312539453126 },
+        { "color": "#006600", "point": 0.4609375046093749 },
+        { "color": "#33cc00", "point": 0.5312500053125001 },
+        { "color": "#33cc00", "point": 0.5898437558984376 },
+        { "color": "#ffff66", "point": 0.6796875067968751 },
+        { "color": "#ffff66", "point": 0.7460937574609376 },
+        { "color": "#ff9900", "point": 0.8320312583203127 },
+        { "color": "#ff9933", "point": 0.9063881445345908 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris pressure",
+      "data": [
+        { "color": "#ffffff", "point": 0.0 },
+        { "color": "#ffff33", "point": 0.5 },
+        { "color": "#006633", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient green",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#00ff00", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "wew water yel",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.004972650422675181 },
+        { "color": "#00ffff", "point": 0.2536051715564395 },
+        { "color": "#00ff00", "point": 0.5022376926902039 },
+        { "color": "#ffff00", "point": 0.7508702138239682 },
+        { "color": "#ff0000", "point": 0.9995027349577326 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "Spot6 color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "classes 5 colors",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#ffffff", "point": 7.798751492142183e-10 },
+        { "color": "#ffffff", "point": 0.09021989254746032 },
+        { "color": "#98d8e8", "point": 0.09021989366743141 },
+        { "color": "#98d8e8", "point": 0.2239942187605194 },
+        { "color": "#98ce16", "point": 0.22399422121823376 },
+        { "color": "#98ce16", "point": 0.5008759613950504 },
+        { "color": "#ffe500", "point": 0.5008759666215821 },
+        { "color": "#ffe500", "point": 0.816549214785635 },
+        { "color": "#ff3300", "point": 0.8165492232074433 },
+        { "color": "#ff3300", "point": 0.9999999897436841 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "heatmap",
+      "data": [
+        { "color": "#053061", "point": 0 },
+        { "color": "#053061", "point": 0.032258064516129 },
+        { "color": "#09386d", "point": 0.032258064516129 },
+        { "color": "#09386d", "point": 0.0645161290322581 },
+        { "color": "#134c87", "point": 0.0645161290322581 },
+        { "color": "#134c87", "point": 0.0967741935483871 },
+        { "color": "#1d5fa2", "point": 0.0967741935483871 },
+        { "color": "#1d5fa2", "point": 0.129032258064516 },
+        { "color": "#276eb0", "point": 0.129032258064516 },
+        { "color": "#276eb0", "point": 0.161290322580645 },
+        { "color": "#337eb8", "point": 0.161290322580645 },
+        { "color": "#337eb8", "point": 0.193548387096774 },
+        { "color": "#3f8ec0", "point": 0.193548387096774 },
+        { "color": "#3f8ec0", "point": 0.225806451612903 },
+        { "color": "#569fc9", "point": 0.225806451612903 },
+        { "color": "#569fc9", "point": 0.258064516129032 },
+        { "color": "#71b0d3", "point": 0.258064516129032 },
+        { "color": "#71b0d3", "point": 0.290322580645161 },
+        { "color": "#8dc2dc", "point": 0.290322580645161 },
+        { "color": "#8dc2dc", "point": 0.32258064516129 },
+        { "color": "#a2cde3", "point": 0.32258064516129 },
+        { "color": "#a2cde3", "point": 0.354838709677419 },
+        { "color": "#b8d8e9", "point": 0.354838709677419 },
+        { "color": "#b8d8e9", "point": 0.387096774193548 },
+        { "color": "#cfe4ef", "point": 0.387096774193548 },
+        { "color": "#cfe4ef", "point": 0.419354838709677 },
+        { "color": "#ddebf2", "point": 0.419354838709677 },
+        { "color": "#ddebf2", "point": 0.451612903225806 },
+        { "color": "#eaf1f5", "point": 0.451612903225806 },
+        { "color": "#eaf1f5", "point": 0.483870967741936 },
+        { "color": "#f7f6f6", "point": 0.483870967741936 },
+        { "color": "#f7f6f6", "point": 0.516129032258065 },
+        { "color": "#f9eee7", "point": 0.516129032258065 },
+        { "color": "#f9eee7", "point": 0.548387096774194 },
+        { "color": "#fbe4d6", "point": 0.548387096774194 },
+        { "color": "#fbe4d6", "point": 0.580645161290323 },
+        { "color": "#fdd9c4", "point": 0.580645161290323 },
+        { "color": "#fdd9c4", "point": 0.612903225806452 },
+        { "color": "#f9c6ac", "point": 0.612903225806452 },
+        { "color": "#f9c6ac", "point": 0.645161290322581 },
+        { "color": "#f6b394", "point": 0.645161290322581 },
+        { "color": "#f6b394", "point": 0.67741935483871 },
+        { "color": "#f2a17f", "point": 0.67741935483871 },
+        { "color": "#f2a17f", "point": 0.709677419354839 },
+        { "color": "#e8896c", "point": 0.709677419354839 },
+        { "color": "#e8896c", "point": 0.741935483870968 },
+        { "color": "#dd7059", "point": 0.741935483870968 },
+        { "color": "#dd7059", "point": 0.774193548387097 },
+        { "color": "#d25849", "point": 0.774193548387097 },
+        { "color": "#d25849", "point": 0.806451612903226 },
+        { "color": "#c53e3d", "point": 0.806451612903226 },
+        { "color": "#c53e3d", "point": 0.838709677419355 },
+        { "color": "#b82531", "point": 0.838709677419355 },
+        { "color": "#b82531", "point": 0.870967741935484 },
+        { "color": "#a81529", "point": 0.870967741935484 },
+        { "color": "#a81529", "point": 0.903225806451613 },
+        { "color": "#8d0c25", "point": 0.903225806451613 },
+        { "color": "#8d0c25", "point": 0.935483870967742 },
+        { "color": "#730421", "point": 0.935483870967742 },
+        { "color": "#730421", "point": 0.967741935483871 },
+        { "color": "#67001f", "point": 0.967741935483871 },
+        { "color": "#67001f", "point": 1 }        
+      ]
+    },
+    {
+      "name": "cc yellowsubstance",
+      "data": [
+        { "color": "#1d288c", "point": 0.0 },
+        { "color": "#017aa1", "point": 0.006224759767712962 },
+        { "color": "#6ab4b5", "point": 0.021754709589763038 },
+        { "color": "#d2eec9", "point": 0.06049987413833884 },
+        { "color": "#f5f5ab", "point": 0.15716391961804582 },
+        { "color": "#afaf37", "point": 0.39832788929968493 },
+        { "color": "#b04410", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris case2",
+      "data": [
+        { "color": "#000099", "point": 0.0 },
+        { "color": "#33ffcc", "point": 0.025 },
+        { "color": "#99ff66", "point": 0.05 },
+        { "color": "#ffff33", "point": 0.1 },
+        { "color": "#ffcccc", "point": 0.2 },
+        { "color": "#ff9966", "point": 0.25 },
+        { "color": "#cc0000", "point": 0.5 },
+        { "color": "#ff66ff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "classes 7 colors",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#0000ff", "point": 1.5798712557056704e-10 },
+        { "color": "#0000ff", "point": 0.03850844018801232 },
+        { "color": "#33ffff", "point": 0.03850844062689233 },
+        { "color": "#33ffff", "point": 0.08239643790752987 },
+        { "color": "#006600", "point": 0.08239643878528977 },
+        { "color": "#006600", "point": 0.17017243334656493 },
+        { "color": "#33cc00", "point": 0.17017243510208482 },
+        { "color": "#33cc00", "point": 0.25794842878559987 },
+        { "color": "#ffff00", "point": 0.25794843141887985 },
+        { "color": "#ffff00", "point": 0.4335004196636698 },
+        { "color": "#ff7f05", "point": 0.4335004240524697 },
+        { "color": "#ff7f05", "point": 0.8723803968588452 },
+        { "color": "#ff0000", "point": 0.8723804056364453 },
+        { "color": "#ff0000", "point": 0.9999999899462045 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "RapidEye color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#404040", "point": 0.2500038147554742 },
+        { "color": "#808080", "point": 0.5000076295109483 },
+        { "color": "#e0e0e0", "point": 0.7500114442664225 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "spectrum large",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#3a003a", "point": 0.07692307692307693 },
+        { "color": "#550088", "point": 0.15384615384615385 },
+        { "color": "#4200d1", "point": 0.23076923076923078 },
+        { "color": "#0000ff", "point": 0.3076923076923077 },
+        { "color": "#006eff", "point": 0.38461538461538464 },
+        { "color": "#00ffff", "point": 0.46153846153846156 },
+        { "color": "#00ffb2", "point": 0.5384615384615384 },
+        { "color": "#00ff59", "point": 0.6153846153846154 },
+        { "color": "#00ff00", "point": 0.6923076923076923 },
+        { "color": "#a5ff00", "point": 0.7692307692307693 },
+        { "color": "#ffff00", "point": 0.8461538461538461 },
+        { "color": "#ff8c00", "point": 0.9230769230769231 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cc tsm",
+      "data": [
+        { "color": "#000080", "point": 0.0 },
+        { "color": "#3366ff", "point": 0.0025140867452414424 },
+        { "color": "#99ccff", "point": 0.007841236499382986 },
+        { "color": "#ccffff", "point": 0.019468463102493085 },
+        { "color": "#eeb200", "point": 0.04285422377807247 },
+        { "color": "#f37018", "point": 0.09797780251336673 },
+        { "color": "#ff0000", "point": 0.23161072065953464 },
+        { "color": "#cc0000", "point": 0.49887655695187044 },
+        { "color": "#993300", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "WorldView2ESA color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris veg index",
+      "data": [
+        { "color": "#d9d9ad", "point": 0.0 },
+        { "color": "#ffff66", "point": 0.2727272727272727 },
+        { "color": "#c79c3e", "point": 0.5272727272727273 },
+        { "color": "#ccff66", "point": 0.7272727272727273 },
+        { "color": "#72b82e", "point": 0.890909090909091 },
+        { "color": "#336600", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cc iop quality",
+      "data": [
+        { "color": "#99ccff", "point": 0.0 },
+        { "color": "#008080", "point": 0.00038461873019958605 },
+        { "color": "#ffff00", "point": 0.006239466283900869 },
+        { "color": "#cc0000", "point": 0.07208746578998437 },
+        { "color": "#cc00cc", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "WorldView color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient blue",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "JET",
+      "data": [
+        { "color": "#ff0000", "point": 0.0 },
+        { "color": "#ffff00", "point": 0.25 },
+        { "color": "#00ff00", "point": 0.5 },
+        { "color": "#00ffff", "point": 0.75 },
+        { "color": "#0000ff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cc general",
+      "data": [
+        { "color": "#000080", "point": 0.0 },
+        { "color": "#3366ff", "point": 0.0014953788817906985 },
+        { "color": "#00ffff", "point": 0.004993420702455923 },
+        { "color": "#339966", "point": 0.013176160694390324 },
+        { "color": "#99cc33", "point": 0.03231750811340698 },
+        { "color": "#ffff00", "point": 0.07709360772999524 },
+        { "color": "#ff9900", "point": 0.1818354032256871 },
+        { "color": "#d12603", "point": 0.4268510213255938 },
+        { "color": "#c10303", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "velocity",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#4200d1", "point": 0.23076923076923075 },
+        { "color": "#0000ff", "point": 0.3076923076923077 },
+        { "color": "#006eff", "point": 0.38461538461538464 },
+        { "color": "#00ffff", "point": 0.4615384615384615 },
+        { "color": "#00ffb2", "point": 0.5384615384615384 },
+        { "color": "#00ff59", "point": 0.6153846153846154 },
+        { "color": "#00ff00", "point": 0.6923076923076923 },
+        { "color": "#a5ff00", "point": 0.7692307692307693 },
+        { "color": "#ffff00", "point": 0.8461538461538461 },
+        { "color": "#ff8c00", "point": 0.923076923076923 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris algal",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#3366ff", "point": 0.006949423043067756 },
+        { "color": "#33ffcc", "point": 0.026294824591139764 },
+        { "color": "#33ff00", "point": 0.09770851076334326 },
+        { "color": "#ffff00", "point": 0.2970218750939274 },
+        { "color": "#ff3333", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "Pleiades color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "AlosAV2 color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "wew water chl",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.0036764705882352975 },
+        { "color": "#00ffff", "point": 0.2610294117647059 },
+        { "color": "#00ff00", "point": 0.5 },
+        { "color": "#ffff00", "point": 0.7389705882352942 },
+        { "color": "#ff0000", "point": 0.9963235294117648 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "wew water tsm",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.004504504504504509 },
+        { "color": "#00ffff", "point": 0.20720720720720723 },
+        { "color": "#00ff00", "point": 0.5 },
+        { "color": "#ffff00", "point": 0.7477477477477478 },
+        { "color": "#ff0000", "point": 0.9954954954954955 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "spectrum cycle",
+      "data": [
+        { "color": "#ff0000", "point": 0.0 },
+        { "color": "#ff8000", "point": 0.09090909090909091 },
+        { "color": "#ffff00", "point": 0.18181818181818182 },
+        { "color": "#80ff00", "point": 0.2727272727272727 },
+        { "color": "#00ff00", "point": 0.36363636363636365 },
+        { "color": "#00ff80", "point": 0.45454545454545453 },
+        { "color": "#00ffff", "point": 0.5454545454545454 },
+        { "color": "#0080ff", "point": 0.6363636363636364 },
+        { "color": "#0000ff", "point": 0.7272727272727273 },
+        { "color": "#8000ff", "point": 0.8181818181818182 },
+        { "color": "#ff00ff", "point": 0.9090909090909091 },
+        { "color": "#ff0080", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "wew water tau",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#0000ff", "point": 0.00980392156862745 },
+        { "color": "#00ffff", "point": 0.2058823529411765 },
+        { "color": "#00ff00", "point": 0.4019607843137255 },
+        { "color": "#ffff00", "point": 0.5980392156862745 },
+        { "color": "#ff0000", "point": 0.7941176470588236 },
+        { "color": "#000000", "point": 0.9901960784313726 }
+      ]
+    },
+    {
+      "name": "gradient red to black",
+      "data": [
+        { "color": "#ff0000", "point": 0.0 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cc z90",
+      "data": [
+        { "color": "#003366", "point": 0.0 },
+        { "color": "#3366ff", "point": 0.3333333333333333 },
+        { "color": "#99cccb", "point": 0.6666666666666666 },
+        { "color": "#5b4200", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "tree cover percent",
+      "data": [
+        { "color": "#ffc800", "point": 0.0 },
+        { "color": "#ffff00", "point": 0.010101010101010102 },
+        { "color": "#00ff00", "point": 0.1717171717171717 },
+        { "color": "#045304", "point": 0.29797979797979796 },
+        { "color": "#002306", "point": 0.5 },
+        { "color": "#0000ff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "7 colors",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#0000ff", "point": 1.5798712557056704e-10 },
+        { "color": "#33ffff", "point": 0.03850844062689233 },
+        { "color": "#006600", "point": 0.08239643878528977 },
+        { "color": "#33cc00", "point": 0.17017243510208482 },
+        { "color": "#ffff00", "point": 0.25794843141887985 },
+        { "color": "#ff7f05", "point": 0.4335004240524697 },
+        { "color": "#ff0000", "point": 0.8723804056364453 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "CHL SeaWiFS",
+      "data": [
+        { "color": "#90006f", "point": 0.0 },
+        { "color": "#5700a8", "point": 0.00020004000800160032 },
+        { "color": "#3300cc", "point": 0.0004000800160032006 },
+        { "color": "#0900f6", "point": 0.0008001600320064013 },
+        { "color": "#0060fe", "point": 0.001800360072014403 },
+        { "color": "#00caff", "point": 0.003800760152030406 },
+        { "color": "#00ffef", "point": 0.005801160232046409 },
+        { "color": "#00ffaf", "point": 0.007801560312062412 },
+        { "color": "#00ff77", "point": 0.009801960392078415 },
+        { "color": "#00ff2f", "point": 0.01380276055211042 },
+        { "color": "#30ff00", "point": 0.01980396079215843 },
+        { "color": "#c8ff00", "point": 0.03980796159231846 },
+        { "color": "#ffeb00", "point": 0.0598119623924785 },
+        { "color": "#ffaf00", "point": 0.09981996399279856 },
+        { "color": "#ff8700", "point": 0.13982796559311864 },
+        { "color": "#ff5f00", "point": 0.1998399679935987 },
+        { "color": "#ff0f00", "point": 0.399879975995199 },
+        { "color": "#d70000", "point": 0.5999199839967994 },
+        { "color": "#af0000", "point": 0.7999599919983997 },
+        { "color": "#8c0000", "point": 1.0 },
+        { "color": "#730000", "point": 0.11982396479295859 }
+      ]
+    },
+    {
+      "name": "Spot color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.09 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "5 colors",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#ffffff", "point": 7.798751492142183e-10 },
+        { "color": "#98d8e8", "point": 0.09021989366743141 },
+        { "color": "#98ce16", "point": 0.22399422121823376 },
+        { "color": "#ffe500", "point": 0.5008759666215821 },
+        { "color": "#ff3300", "point": 0.8165492232074433 },
+        { "color": "#000000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient grey",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "SMOS band differences",
+      "data": [
+        { "color": "#000080", "point": 0.0 },
+        { "color": "#ffffff", "point": 0.5 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "AlosPRI color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient red white blue",
+      "data": [
+        { "color": "#ff0000", "point": 0.0 },
+        { "color": "#ffffff", "point": 0.5000000000000001 },
+        { "color": "#0000cc", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "great circle",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#0000ff", "point": 2.777700619424712e-5 },
+        { "color": "#ffffff", "point": 0.5000138885030971 },
+        { "color": "#ff0000", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "meris wind direction",
+      "data": [
+        { "color": "#ff3333", "point": 0.0 },
+        { "color": "#6666ff", "point": 0.25 },
+        { "color": "#ffffff", "point": 0.5 },
+        { "color": "#33ff33", "point": 0.75 },
+        { "color": "#ff3333", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "cubehelix cycle",
+      "data": [
+        { "color": "#6e3caa", "point": 0.0 },
+        { "color": "#d23ca0", "point": 0.14285714285714285 },
+        { "color": "#ff6e46", "point": 0.2857142857142857 },
+        { "color": "#c8c832", "point": 0.42857142857142855 },
+        { "color": "#50f564", "point": 0.5714285714285714 },
+        { "color": "#19c8b4", "point": 0.7142857142857143 },
+        { "color": "#3c82dc", "point": 0.8571428571428571 },
+        { "color": "#6446be", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "gradient red",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#ff0000", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "terrain",
+      "data": [
+        { "color": "#0000ff", "point": 0.0 },
+        { "color": "#00ffff", "point": 0.043614680394447304 },
+        { "color": "#ffff99", "point": 0.08722936078889461 },
+        { "color": "#669900", "point": 0.21686746987951808 },
+        { "color": "#666600", "point": 0.43975903614457834 },
+        { "color": "#ffc800", "point": 0.7018072289156626 },
+        { "color": "#ffff00", "point": 0.8974219662600854 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    },
+    {
+      "name": "Ikonos color palette",
+      "data": [
+        { "color": "#000000", "point": 0.0 },
+        { "color": "#808080", "point": 0.5 },
+        { "color": "#ffffff", "point": 1.0 }
+      ]
+    }
+  ]

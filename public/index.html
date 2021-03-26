@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta property="title" content="Dynamic Lakes" />
+    <meta
+      name="description"
+      content="3D stream line representation of the velocity field in lakes."
+    />
+    <meta name="author" content="James Runnalls" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="google-site-verification" content="" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://www.googletagmanager.com https://google-analytics.com https://swisstopobasemaps.ch; object-src 'self'"
+    />
+    <style>
+      .fade-in {
+        animation: fadeIn ease 2s;
+        -webkit-animation: fadeIn ease 2s;
+        -moz-animation: fadeIn ease 2s;
+        -o-animation: fadeIn ease 2s;
+        -ms-animation: fadeIn ease 2s;
+      }
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-moz-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-o-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-ms-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .pagecenter {
+        width: 100vw;
+        text-align: center;
+        vertical-align: middle;
+        position: fixed;
+        top: calc(50vh - 100px);
+      }
+
+      .loading-text {
+        margin-top: 80px;
+        color: white;
+        font-family: monospace;
+        font-size: 26px;
+      }
+
+      .loading-subtext {
+        color: white;
+        font-family: monospace;
+        margin-top: 10px;
+      }
+
+      body {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="pagecenter">
+        <div class="loading-text fade-in">Welcome to Dynamic Lakes</div>
+        <div class="loading-subtext fade-in">Loading page...</div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "name": "dynamiclakes",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "axios": "^0.21.1",
+    "d3": "^5.12.0",
+    "date-fns": "^2.5.1",
+    "delaunator": "^4.0.1",
+    "three": "^0.119.1",
+    "geotiff": "^1.0.0-beta.16",
+    "leaflet": "^1.5.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-ga": "^3.3.0",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.4.1"
+  },
+  "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts  build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
