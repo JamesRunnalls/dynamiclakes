@@ -3,22 +3,76 @@
   height: 600px;
 }
 
-.main .about {
+.main .time {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  left: 0;
   z-index: 1;
   color: white;
   font-family: monospace;
   max-width: 250px;
+  padding: 10px;
 }
 
-.main .about .plotparameters .plotrow {
-  margin-top: 10px;
+.main .time table {
+  font-size: 20px;
+}
+
+.main .controls {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  color: white;
+  font-family: monospace;
+  max-width: 250px;
+  padding: 10px;
+}
+
+.main .git {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  color: white;
+  font-family: monospace;
+  max-width: 250px;
+  padding: 10px;
+}
+
+.main .git img {
+  transition: transform .2s;
+  width: 30px;
+}
+
+.main .git img:hover {
+  transform: scale(1.05);
+}
+
+.main .about {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  color: white;
+  font-family: monospace;
+  max-width: 250px;
+  padding: 10px;
+}
+
+.main .about a {
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.main .controls .plotparameters .plotrow {
+  margin-bottom: 10px;
   text-align: right;
 }
 
-.main .about .plotparameters .plotrow button {
+.main .controls .plotparameters .plotrow button {
   background-color: transparent;
   color: white;
   border: 1px solid white;
@@ -27,29 +81,29 @@
   cursor: pointer;
 }
 
-.main .about .plotparameters .plotrow button:hover {
+.main .controls .plotparameters .plotrow button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.main .about .plotparameters .plotrow input {
+.main .controls .plotparameters .plotrow input {
   border: 1px solid white;
   background-color: transparent;
   color: white;
   width: 70px;
 }
 
-.main .about .plotparameters table.scale-box {
+.main .controls .plotparameters table.scale-box {
   border-collapse: collapse;
   display: inline-block;
   margin-bottom: -4px;
   margin-left: 10px;
 }
 
-.main .about .plotparameters table.scale-box td {
+.main .controls .plotparameters table.scale-box td {
   border: 1px solid white;
 }
 
-.main .about .plotparameters table.scale-box input {
+.main .controls .plotparameters table.scale-box input {
   color: white;
   background: transparent;
   border: 0;

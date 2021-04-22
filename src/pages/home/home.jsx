@@ -7,7 +7,7 @@ import colorlist from "../../components/colors/colors";
 import { getBinaryColor } from "../../components/gradients/gradients";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 //import Stats from "three/examples/jsm/libs/stats.module.js";
-import { apiUrl } from "../../config.json";
+import git from "./img/git.png"
 import "./css/home.css";
 
 class Home extends Component {
@@ -24,8 +24,17 @@ class Home extends Component {
     fadeOutPercentage: 0.1,
     update: false,
     mesh: true,
-    lake: "geneva",
-    lakes: { geneva: { data: [] }, zurich: { data: [] } },
+    lake: "geneva_20210104_2100",
+    lakes: {
+      geneva_20210104_0000: { data: [] },
+      geneva_20210104_0300: { data: [] },
+      geneva_20210104_0600: { data: [] },
+      geneva_20210104_0900: { data: [] },
+      geneva_20210104_1200: { data: [] },
+      geneva_20210104_1500: { data: [] },
+      geneva_20210104_1800: { data: [] },
+      geneva_20210104_2100: { data: [] },
+    },
   };
 
   update = () => {
@@ -37,15 +46,18 @@ class Home extends Component {
   };
 
   downloadLake = async (name) => {
-    var { data } = await axios.get(apiUrl + "/externaldata/threed/" + name, {
-      onDownloadProgress: (progressEvent) => {
-        const percentage = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        document.getElementById("subtext").innerHTML =
-          "Downloading velocity field... " + percentage + "%";
-      },
-    });
+    var { data } = await axios.get(
+      "https://dynamiclakes.s3.eu-central-1.amazonaws.com/" + name + ".json",
+      {
+        onDownloadProgress: (progressEvent) => {
+          const percentage = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          document.getElementById("subtext").innerHTML =
+            "Downloading velocity field... " + percentage + "%";
+        },
+      }
+    );
     return data;
   };
 
@@ -599,6 +611,28 @@ class Home extends Component {
     );
   };
 
+  capitalize = (s) => {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
+
+  dateFromString = (date, time) => {
+    var year = parseInt(date.slice(0, 4));
+    var month = parseInt(date.slice(4, 6));
+    var day = parseInt(date.slice(6, 8));
+    var hour = parseInt(time.slice(0, 2));
+    var minute = parseInt(time.slice(2, 4));
+    return new Date(year, month, day, hour, minute);
+  };
+
+  getTime = (datetime) => {
+    var hours = parseInt(datetime.getHours());
+    var minutes = parseInt(datetime.getMinutes());
+    if (hours < 10) hours = "0" + hours;
+    if (minutes < 10) minutes = "0" + minutes;
+    return hours + ":" + minutes;
+  };
+
   async componentDidMount() {
     var { quadtreeSensitivity, lake, lakes } = this.state;
     lakes[lake].data = await this.downloadLake(lake);
@@ -627,60 +661,113 @@ class Home extends Component {
   }
 
   render() {
-    var { loaded, noParticles, velocityFactor, maxAge, mesh } = this.state;
+    var {
+      loaded,
+      noParticles,
+      velocityFactor,
+      maxAge,
+      mesh,
+      lake,
+    } = this.state;
+    var ls = lake.split("_");
+    var lake_name = "Lake " + this.capitalize(ls[0]);
+    var datetime = this.dateFromString(ls[1], ls[2]);
     document.title = "Dynamic Lakes";
     return (
       <React.Fragment>
         <div className="main">
           {loaded && (
-            <div className="about fade-in">
-              Dynamic lakes uses the output simulation results from the
-              Meteolakes project, in order to display 3D stream lines.
-              <div className="plotparameters">
-                <div className="plotrow">
-                  View Boundary
-                  <input
-                    type="checkbox"
-                    checked={mesh}
-                    onChange={this.toggleMesh}
-                  />
-                </div>
-                <div className="plotrow">
-                  Streams{" "}
-                  <input
-                    min={1}
-                    type="number"
-                    value={noParticles}
-                    onChange={(e) => this.onChangeState("noParticles", e)}
-                    title="WARNING! Unless your PC is super powerful more than 10000 streams is likely to crash your browser."
-                  />
-                  <button
-                    onClick={this.update}
-                    title="Update number of streams"
-                  >
-                    &#8635;
-                  </button>
-                </div>
-                <div className="plotrow">
-                  Velocity{" "}
-                  <input
-                    min={1}
-                    type="number"
-                    value={velocityFactor}
-                    onChange={(e) => this.onChangeState("velocityFactor", e)}
-                  />
-                </div>
-                <div className="plotrow">
-                  Max Age{" "}
-                  <input
-                    min={1}
-                    type="number"
-                    value={maxAge}
-                    onChange={(e) => this.onChangeState("maxAge", e)}
-                  />
+            <React.Fragment>
+              <div className="time fade-in">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td
+                        rowSpan="2"
+                        style={{ textAlign: "right", fontSize: "60px" }}
+                      >
+                        {datetime.getDate()}
+                      </td>
+                      <td style={{ verticalAlign: "bottom" }}>
+                        {datetime.toLocaleString("default", { month: "short" })}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={{ verticalAlign: "top" }}>
+                        {datetime.getFullYear()}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        colSpan="2"
+                        style={{ fontSize: "12px", textAlign: "center" }}
+                      >
+                        {lake_name}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="2" style={{ textAlign: "center" }}>
+                        {this.getTime(datetime)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="controls fade-in">
+                <div className="plotparameters">
+                  <div className="plotrow">
+                    View Boundary
+                    <input
+                      type="checkbox"
+                      checked={mesh}
+                      onChange={this.toggleMesh}
+                    />
+                  </div>
+                  <div className="plotrow">
+                    Streams{" "}
+                    <input
+                      min={1}
+                      type="number"
+                      value={noParticles}
+                      onChange={(e) => this.onChangeState("noParticles", e)}
+                      title="WARNING! Unless your PC is super powerful more than 10000 streams is likely to crash your browser."
+                    />
+                    <button
+                      onClick={this.update}
+                      title="Update number of streams"
+                    >
+                      &#8635;
+                    </button>
+                  </div>
+                  <div className="plotrow">
+                    Velocity{" "}
+                    <input
+                      min={1}
+                      type="number"
+                      value={velocityFactor}
+                      onChange={(e) => this.onChangeState("velocityFactor", e)}
+                    />
+                  </div>
+                  <div className="plotrow">
+                    Max Age{" "}
+                    <input
+                      min={1}
+                      type="number"
+                      value={maxAge}
+                      onChange={(e) => this.onChangeState("maxAge", e)}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+              <div className="about fade-in">
+                Dynamic lakes uses the output simulation results from the {" "}
+                <a href="http://meteolakes.ch/">Meteolakes</a> project, in order
+                to display 3D stream lines.
+              </div>
+              <div className="git fade-in">
+                <a title="Check out the project on GitHub" href="https://github.com/JamesRunnalls/dynamiclakes"><img src={git} alt="git" /></a>
+              </div>
+            </React.Fragment>
           )}
 
           <div className="threeviewer" ref={(ref) => (this.mount = ref)}>
