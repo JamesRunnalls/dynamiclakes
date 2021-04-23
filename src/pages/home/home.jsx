@@ -17,7 +17,7 @@ class Home extends Component {
   state = {
     loaded: false,
     bounds: 45,
-    zScale: 40,
+    zScale: 5,
     xScale: 1,
     yScale: 1,
     timeout: 3000,
@@ -26,7 +26,7 @@ class Home extends Component {
     minVelocity: 0,
     maxVelocity: 0,
     quadtreeSensitivity: 0.5,
-    velocityFactor: 2,
+    velocityFactor: 0.5,
     maxAge: 200,
     noParticles: 10000,
     fadeOutPercentage: 0.1,
@@ -34,8 +34,9 @@ class Home extends Component {
     mesh: true,
     play: true,
     data: [],
-    lake: "geneva_20210104_0000",
+    lake: "tornado3D",
     lakes: [
+      "tornado3D",
       "geneva_20210104_0000",
       "geneva_20210104_0300",
       "geneva_20210104_0600",
@@ -277,6 +278,7 @@ class Home extends Component {
           outdata[i][j] = [
             JSON.parse(JSON.stringify(quad[2])),
             JSON.parse(JSON.stringify(quad[3])),
+            JSON.parse(JSON.stringify(quad[4])),
           ];
         }
       }
@@ -442,27 +444,42 @@ class Home extends Component {
     let {
       xSize,
       ySize,
+      zSize,
       xllcorner,
       yllcorner,
+      zllcorner,
       nCols,
       nRows,
+      nZ,
       griddata,
       velocityFactor,
       depths,
     } = this.state;
-    var zi = this.indexOfClosest(zin, depths);
     var i = Math.round((yin - yllcorner) / ySize);
     var j = Math.round((xin - xllcorner) / xSize);
-    if (i > -1 && i < nRows && j > -1 && j < nCols && griddata[i][j] !== null) {
+    var k = Math.round((zin - zllcorner) / zSize);
+    if (
+      i > -1 &&
+      i < nRows &&
+      j > -1 &&
+      j < nCols &&
+      k > -1 &&
+      k < nZ &&
+      griddata[i][j] !== null
+    ) {
       var u = 0;
       var v = 0;
-      if (griddata[i][j][0].length > 0 && griddata[i][j][0][zi] !== -999)
-        u = griddata[i][j][0][zi];
-      if (griddata[i][j][1].length > 0 && griddata[i][j][1][zi] !== -999)
-        v = griddata[i][j][1][zi];
+      var w = 0;
+      if (griddata[i][j][0].length > 0 && griddata[i][j][0][k] !== -999)
+        u = griddata[i][j][0][k];
+      if (griddata[i][j][1].length > 0 && griddata[i][j][1][k] !== -999)
+        v = griddata[i][j][1][k];
+      if (griddata[i][j][2].length > 0 && griddata[i][j][2][k] !== -999)
+        w = griddata[i][j][2][k];
       var x = xin + u * velocityFactor;
       var y = yin + -v * velocityFactor;
-      return { x, y, z: zin, u, v };
+      var z = zin + w * velocityFactor;
+      return { x, y, z, u, v };
     } else {
       return false;
     }
@@ -649,6 +666,10 @@ class Home extends Component {
       quadtree,
     } = this.dataToGrid(arr, quadtreeSensitivity);
 
+    var zllcorner = Math.min(...depths);
+    var nZ = depths.length;
+    var zSize = Math.max(...depths) - zllcorner / nZ;
+
     var subtext = document.getElementById("subtext");
     subtext.innerHTML = "Plotting velocity field... ";
     subtext.classList.add("fade-out");
@@ -657,10 +678,13 @@ class Home extends Component {
       {
         nCols,
         nRows,
+        nZ,
         xSize,
         ySize,
+        zSize,
         xllcorner,
         yllcorner,
+        zllcorner,
         griddata,
         arr,
         depths,
@@ -711,9 +735,9 @@ class Home extends Component {
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
     this.processData(quadtreeSensitivity, data);
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.updateData();
-    }, timeout);
+    }, timeout);*/
   }
 
   componentWillUnmount() {
@@ -742,15 +766,10 @@ class Home extends Component {
       velocityFactor,
       maxAge,
       mesh,
-      lake,
       colorTitle,
       minVelocity,
       maxVelocity,
-      play,
     } = this.state;
-    var ls = lake.split("_");
-    var lake_name = "Lake " + this.capitalize(ls[0]);
-    var datetime = this.dateFromString(ls[1], ls[2]);
     var colors = colorlist.find((c) => c.name === colorTitle).data;
     document.title = "Dynamic Lakes - A day in the life of Lake Geneva";
     return (
@@ -758,49 +777,6 @@ class Home extends Component {
         <div className="main">
           {loaded && (
             <React.Fragment>
-              <div className="time fade-in">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td
-                        rowSpan="2"
-                        style={{ textAlign: "right", fontSize: "60px" }}
-                      >
-                        {datetime.getDate()}
-                      </td>
-                      <td style={{ verticalAlign: "bottom" }}>
-                        {datetime.toLocaleString("default", { month: "short" })}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={{ verticalAlign: "top" }}>
-                        {datetime.getFullYear()}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        colSpan="2"
-                        style={{ fontSize: "12px", textAlign: "center" }}
-                      >
-                        {lake_name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2" style={{ paddingLeft: "5px" }}>
-                        {this.getTime(datetime)}
-                        <img
-                          src={play ? pauseIcon : playIcon}
-                          alt="Play pause"
-                          onClick={this.togglePlay}
-                          title={
-                            play ? "Stop time change." : "Start time change."
-                          }
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
               <div className="controls fade-in">
                 <div className="plotparameters">
                   <div className="plotrow" style={{ marginBottom: "0" }}>
@@ -866,9 +842,7 @@ class Home extends Component {
                 </div>
               </div>
               <div className="about fade-in">
-                Dynamic lakes displays simulated mixing in Lake Geneva from Jan 4th. Data
-                comes from the <a href="http://meteolakes.ch/">Meteolakes</a>{" "}
-                project.
+                https://cgl.ethz.ch/research/visualization/data.php
               </div>
               <div className="git fade-in">
                 <a
