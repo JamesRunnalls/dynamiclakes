@@ -1,0 +1,55 @@
+.colorramp {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.colorramp-option {
+  width: 100%;
+  height: 25px;
+  text-align: center;
+  color: transparent;
+  line-height: 25px;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 0 0 4px 0;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+.colorramp-option:hover {
+  color: white;
+}
+
+.colorramp-dropdown {
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: black;
+  margin-top: 4px;
+  -ms-overflow-style: none;
+}
+
+.colorramp-dropdown.hide {
+  display: none;
+}
+
+.colorramp-select {
+  width: 100%;
+  height: 25px;
+  cursor: pointer;
+  text-align: center;
+  padding: 3px 6px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  color: transparent;
+}
+
+.colorramp-select:hover {
+  color: white;
+}
+
+.colorramp-dropdown::-webkit-scrollbar {
+  display: none;
+}

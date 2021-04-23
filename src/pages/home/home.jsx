@@ -6,8 +6,11 @@ import * as d3 from "d3";
 import colorlist from "../../components/colors/colors";
 import { getBinaryColor } from "../../components/gradients/gradients";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import ColorRamp from "../../components/colors/colorramp";
 //import Stats from "three/examples/jsm/libs/stats.module.js";
-import git from "./img/git.png"
+import git from "./img/git.png";
+import playIcon from "./img/play.png";
+import pauseIcon from "./img/pause.png";
 import "./css/home.css";
 
 class Home extends Component {
@@ -17,6 +20,11 @@ class Home extends Component {
     zScale: 40,
     xScale: 1,
     yScale: 1,
+    timeout: 3000,
+    colorTitle: "spectrum",
+    colorbar: [],
+    minVelocity: 0,
+    maxVelocity: 0,
     quadtreeSensitivity: 0.5,
     velocityFactor: 2,
     maxAge: 200,
@@ -24,17 +32,23 @@ class Home extends Component {
     fadeOutPercentage: 0.1,
     update: false,
     mesh: true,
-    lake: "geneva_20210104_2100",
-    lakes: {
-      geneva_20210104_0000: { data: [] },
-      geneva_20210104_0300: { data: [] },
-      geneva_20210104_0600: { data: [] },
-      geneva_20210104_0900: { data: [] },
-      geneva_20210104_1200: { data: [] },
-      geneva_20210104_1500: { data: [] },
-      geneva_20210104_1800: { data: [] },
-      geneva_20210104_2100: { data: [] },
-    },
+    play: true,
+    data: [],
+    lake: "geneva_20210104_0000",
+    lakes: [
+      "geneva_20210104_0000",
+      "geneva_20210104_0300",
+      "geneva_20210104_0600",
+      "geneva_20210104_0900",
+      "geneva_20210104_1200",
+      "geneva_20210104_1500",
+      "geneva_20210104_1800",
+      "geneva_20210104_2100",
+    ],
+  };
+
+  togglePlay = () => {
+    this.setState({ play: !this.state.play });
   };
 
   update = () => {
@@ -59,6 +73,63 @@ class Home extends Component {
       }
     );
     return data;
+  };
+
+  updateData = async () => {
+    var { lakes, lake, quadtreeSensitivity, play, timeout } = this.state;
+    if (play) {
+      var index = lakes.indexOf(lake);
+      if (index === lakes.length - 1) {
+        index = 0;
+      } else {
+        index = index + 1;
+      }
+      lake = lakes[index];
+      var { data } = await axios.get(
+        "https://dynamiclakes.s3.eu-central-1.amazonaws.com/" + lake + ".json"
+      );
+
+      var { depths, arr } = this.globalToLocalCoordinate(data.depths, data.arr);
+      var colorbar = this.generateColorBar(this.state.colorTitle);
+      var {
+        randomPick,
+        bottomSurface,
+        minVelocity,
+        maxVelocity,
+      } = this.dataProperties(depths, arr);
+
+      var {
+        nCols,
+        nRows,
+        xSize,
+        ySize,
+        xllcorner,
+        yllcorner,
+        griddata,
+        quadtree,
+      } = this.dataToGrid(arr, quadtreeSensitivity);
+
+      this.setState({
+        colorbar,
+        lake,
+        data,
+        randomPick,
+        bottomSurface,
+        minVelocity,
+        maxVelocity,
+        nCols,
+        nRows,
+        xSize,
+        ySize,
+        xllcorner,
+        yllcorner,
+        griddata,
+        quadtree,
+      });
+    }
+    setTimeout(() => {
+      this.updateData();
+    }, timeout);
   };
 
   globalToLocalCoordinate = (depths, arr) => {
@@ -222,18 +293,23 @@ class Home extends Component {
     };
   };
 
-  generateColorBar = (arr) => {
+  generateColorBar = (colorTitle) => {
     var colors;
     for (let color of colorlist) {
-      if (color.name === "Paraview") {
+      if (color.name === colorTitle) {
         colors = color.data;
       }
     }
     var colorbar = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 101; i++) {
       colorbar.push(getBinaryColor(i, 0, 99, colors));
     }
     return colorbar;
+  };
+
+  onChangeColors = (colorTitle) => {
+    var colorbar = this.generateColorBar(colorTitle);
+    this.setState({ colorTitle, colorbar });
   };
 
   removeOuterTriangles(indexDelaunay, maxVertex) {
@@ -421,11 +497,11 @@ class Home extends Component {
           positions[line.age * 3] = nextposition.x;
           positions[line.age * 3 + 1] = nextposition.z;
           positions[line.age * 3 + 2] = nextposition.y;
+          let v = Math.sqrt(nextposition.u ** 2 + nextposition.v ** 2);
           let color =
             colorbar[
               Math.round(
-                Math.sqrt(nextposition.u ** 2 + nextposition.v ** 2) /
-                  (maxVelocity - minVelocity)
+                ((v - minVelocity) / (maxVelocity - minVelocity)) * 100
               )
             ];
           colors[line.age * 4 - 4] = color[0];
@@ -552,12 +628,9 @@ class Home extends Component {
     //this.stats.update();
   };
 
-  processData = async (quadtreeSensitivity, lakes, lake) => {
-    var { depths, arr } = this.globalToLocalCoordinate(
-      lakes[lake].data.depths,
-      lakes[lake].data.arr
-    );
-    var colorbar = this.generateColorBar(arr);
+  processData = async (quadtreeSensitivity, data) => {
+    var { depths, arr } = this.globalToLocalCoordinate(data.depths, data.arr);
+    var colorbar = this.generateColorBar(this.state.colorTitle);
     var {
       randomPick,
       bottomSurface,
@@ -597,7 +670,6 @@ class Home extends Component {
         colorbar,
         minVelocity,
         maxVelocity,
-        lakes,
         update: false,
       },
       () => {
@@ -634,11 +706,14 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    var { quadtreeSensitivity, lake, lakes } = this.state;
-    lakes[lake].data = await this.downloadLake(lake);
+    var { quadtreeSensitivity, lake, timeout } = this.state;
+    var data = await this.downloadLake(lake);
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
-    this.processData(quadtreeSensitivity, lakes, lake);
+    this.processData(quadtreeSensitivity, data);
+    setTimeout(() => {
+      this.updateData();
+    }, timeout);
   }
 
   componentWillUnmount() {
@@ -668,11 +743,16 @@ class Home extends Component {
       maxAge,
       mesh,
       lake,
+      colorTitle,
+      minVelocity,
+      maxVelocity,
+      play,
     } = this.state;
     var ls = lake.split("_");
     var lake_name = "Lake " + this.capitalize(ls[0]);
     var datetime = this.dateFromString(ls[1], ls[2]);
-    document.title = "Dynamic Lakes";
+    var colors = colorlist.find((c) => c.name === colorTitle).data;
+    document.title = "Dynamic Lakes - A day in the life of Lake Geneva";
     return (
       <React.Fragment>
         <div className="main">
@@ -706,8 +786,16 @@ class Home extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="2" style={{ textAlign: "center" }}>
+                      <td colSpan="2" style={{ paddingLeft: "5px" }}>
                         {this.getTime(datetime)}
+                        <img
+                          src={play ? pauseIcon : playIcon}
+                          alt="Play pause"
+                          onClick={this.togglePlay}
+                          title={
+                            play ? "Stop time change." : "Start time change."
+                          }
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -715,6 +803,24 @@ class Home extends Component {
               </div>
               <div className="controls fade-in">
                 <div className="plotparameters">
+                  <div className="plotrow" style={{ marginBottom: "0" }}>
+                    <ColorRamp colors={colors} onChange={this.onChangeColors} />
+                    <table className="color-values">
+                      <tbody>
+                        <tr>
+                          <td style={{ textAlign: "left", width: "20%" }}>
+                            {Math.floor(minVelocity * 100) / 100}
+                          </td>
+                          <td style={{ textAlign: "center", width: "26%" }}>
+                            m/s
+                          </td>
+                          <td style={{ textAlign: "right", width: "20%" }}>
+                            {Math.ceil(maxVelocity * 100) / 100}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <div className="plotrow">
                     View Boundary
                     <input
@@ -760,12 +866,17 @@ class Home extends Component {
                 </div>
               </div>
               <div className="about fade-in">
-                Dynamic lakes uses the output simulation results from the {" "}
+                Dynamic lakes uses the output simulation results from the{" "}
                 <a href="http://meteolakes.ch/">Meteolakes</a> project, in order
                 to display 3D stream lines.
               </div>
               <div className="git fade-in">
-                <a title="Check out the project on GitHub" href="https://github.com/JamesRunnalls/dynamiclakes"><img src={git} alt="git" /></a>
+                <a
+                  title="Check out the project on GitHub"
+                  href="https://github.com/JamesRunnalls/dynamiclakes"
+                >
+                  <img src={git} alt="git" />
+                </a>
               </div>
             </React.Fragment>
           )}
