@@ -690,7 +690,7 @@ class Home extends Component {
 
   dateFromString = (date, time) => {
     var year = parseInt(date.slice(0, 4));
-    var month = parseInt(date.slice(4, 6));
+    var month = parseInt(date.slice(4, 6)) - 1;
     var day = parseInt(date.slice(6, 8));
     var hour = parseInt(time.slice(0, 2));
     var minute = parseInt(time.slice(2, 4));
@@ -811,8 +811,8 @@ class Home extends Component {
                           <td style={{ textAlign: "left", width: "20%" }}>
                             {Math.floor(minVelocity * 100) / 100}
                           </td>
-                          <td style={{ textAlign: "center", width: "26%" }}>
-                            m/s
+                          <td style={{ textAlign: "center", width: "60%" }}>
+                            Velocity (m/s)
                           </td>
                           <td style={{ textAlign: "right", width: "20%" }}>
                             {Math.ceil(maxVelocity * 100) / 100}
@@ -866,9 +866,9 @@ class Home extends Component {
                 </div>
               </div>
               <div className="about fade-in">
-                Dynamic lakes uses the output simulation results from the{" "}
-                <a href="http://meteolakes.ch/">Meteolakes</a> project, in order
-                to display 3D stream lines.
+                Dynamic lakes displays simulated mixing in Lake Geneva from Jan 4th. Data
+                comes from the <a href="http://meteolakes.ch/">Meteolakes</a>{" "}
+                project.
               </div>
               <div className="git fade-in">
                 <a
