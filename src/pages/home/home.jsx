@@ -528,6 +528,7 @@ class Home extends Component {
         line.geometry.attributes.color.needsUpdate = true;
       } else {
         // Reset particle location
+        line.geometry.setDrawRange(0, 0);
         line.age = 0;
         line.maxAge = Math.round((maxAge - fadeOut) * Math.random()) + fadeOut;
         let pick = randomPick[Math.round(pl * Math.random())];
@@ -538,12 +539,7 @@ class Home extends Component {
         positions[3] = positions[0] + 0.1;
         positions[4] = positions[1] + 0.1;
         positions[5] = positions[2] + 0.1;
-        for (let c = 0; c < maxAge * 4; c++) {
-          colors[c] = 1;
-        }
-        line.geometry.setDrawRange(0, line.age);
         line.geometry.attributes.position.needsUpdate = true;
-        line.geometry.attributes.color.needsUpdate = true;
       }
     }
   };
