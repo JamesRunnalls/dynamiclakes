@@ -29,10 +29,10 @@ class Home extends Component {
     velocityFactor: 2,
     maxAge: 200,
     noParticles: 10000,
-    fadeOutPercentage: 0.1,
+    fadeOutPercentage: 0.05,
     update: false,
     mesh: true,
-    play: true,
+    play: false,
     data: [],
     lake: "geneva_20210104_0000",
     lakes: [
@@ -520,21 +520,19 @@ class Home extends Component {
         // Fade out line
         line.age++;
         for (let c = 1; c < line.age; c++) {
-          colors[c * 4 - 1] = Math.max(
-            colors[c * 4 - 1] - colors[c * 4 - 1] / (line.maxAge - line.age),
-            0
+          colors[c * 4 - 1] = Math.min(
+            (1 * (line.maxAge - line.age)) / fadeOut,
+            colors[c * 4 - 1]
           );
         }
         line.geometry.attributes.color.needsUpdate = true;
       } else {
         // Reset particle location
-        line.geometry.setDrawRange(0, 0);
         line.age = 0;
         line.maxAge = Math.round((maxAge - fadeOut) * Math.random()) + fadeOut;
         let pick = randomPick[Math.round(pl * Math.random())];
         positions[0] = arr[pick[0]][0]; // x
         positions[1] = depths[pick[1]]; // z
-        //positions[1] = 0; // z
         positions[2] = -arr[pick[0]][1]; // -y
         positions[3] = positions[0] + 0.1;
         positions[4] = positions[1] + 0.1;
@@ -862,9 +860,9 @@ class Home extends Component {
                 </div>
               </div>
               <div className="about fade-in">
-                Dynamic lakes displays simulated mixing in Lake Geneva from Jan 4th. Data
-                comes from the <a href="http://meteolakes.ch/">Meteolakes</a>{" "}
-                project.
+                Dynamic lakes displays simulated mixing in Lake Geneva from Jan
+                4th. Data comes from the{" "}
+                <a href="http://meteolakes.ch/">Meteolakes</a> project.
               </div>
               <div className="git fade-in">
                 <a
