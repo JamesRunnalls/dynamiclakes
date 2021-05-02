@@ -9,6 +9,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import ColorRamp from "../../components/colors/colorramp";
 //import Stats from "three/examples/jsm/libs/stats.module.js";
 import git from "./img/git.png";
+import StreamLines from "../../components/3dstreamlines/3dstreamlines"
 import playIcon from "./img/play.png";
 import pauseIcon from "./img/pause.png";
 import "./css/home.css";
@@ -283,6 +284,7 @@ class Home extends Component {
         }
       }
     }
+    console.log(outdata.flat())
     return {
       nCols,
       nRows,
@@ -552,9 +554,9 @@ class Home extends Component {
         positions[1] = depths[pick[1]]; // z
         //positions[1] = 0; // z
         positions[2] = -arr[pick[0]][1]; // -y
-        positions[3] = positions[0] + 0.1;
-        positions[4] = positions[1] + 0.1;
-        positions[5] = positions[2] + 0.1;
+        positions[3] = positions[0];
+        positions[4] = positions[1];
+        positions[5] = positions[2];
         for (let c = 0; c < maxAge * 4; c++) {
           colors[c] = 1;
         }
@@ -625,9 +627,10 @@ class Home extends Component {
       line.maxAge = Math.round((maxAge - fadeOut) * Math.random()) + fadeOut;
       this.lines.add(line);
     }
+    this.initialPositions();
     this.scene.add(this.lines);
 
-    this.initialPositions();
+    
   };
 
   removeStreamlines = () => {
@@ -731,10 +734,13 @@ class Home extends Component {
 
   async componentDidMount() {
     var { quadtreeSensitivity, lake, timeout } = this.state;
-    var data = await this.downloadLake(lake);
+    //var data = await this.downloadLake(lake);
+    
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
-    this.processData(quadtreeSensitivity, data);
+    //this.processData(quadtreeSensitivity, data);
+    var data2 = await this.downloadLake("tornando2");
+    this.streamlines = new StreamLines(data2.grid, data2.bounds, this.scene)
     /*setTimeout(() => {
       this.updateData();
     }, timeout);*/
