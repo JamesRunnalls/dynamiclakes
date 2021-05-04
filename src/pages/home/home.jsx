@@ -18,7 +18,7 @@ class Home extends Component {
   state = {
     loaded: false,
     bounds: 45,
-    zScale: 5,
+    zScale: 50,
     xScale: 1,
     yScale: 1,
     timeout: 3000,
@@ -35,8 +35,9 @@ class Home extends Component {
     mesh: true,
     play: true,
     data: [],
-    lake: "tornado3D",
+    lake: "cintia",
     lakes: [
+      "cintia",
       "tornado3D",
       "geneva_20210104_0000",
       "geneva_20210104_0300",
@@ -188,7 +189,7 @@ class Home extends Component {
     for (let i = 0; i < arr_len; i++) {
       let depth = 0;
       for (let j = 0; j < depth_len; j++) {
-        if (arr[i][2][j] !== -999 && arr[i][3][j] !== -999) {
+        if (arr[i][2][j] !== -999 && arr[i][3][j] !== -999 && !isNaN(arr[i][2][j]) && !isNaN(arr[i][3][j])) {
           randomPick.push([i, j]);
           let velocity = Math.sqrt(arr[i][2][j] ** 2 + arr[i][3][j] ** 2);
           minVelocity = Math.min(velocity, minVelocity);
@@ -284,7 +285,6 @@ class Home extends Component {
         }
       }
     }
-    console.log(outdata.flat())
     return {
       nCols,
       nRows,
@@ -481,7 +481,7 @@ class Home extends Component {
       var x = xin + u * velocityFactor;
       var y = yin + -v * velocityFactor;
       var z = zin + w * velocityFactor;
-      return { x, y, z, u, v };
+      return { x, y, z, u, v, w };
     } else {
       return false;
     }
@@ -516,7 +516,7 @@ class Home extends Component {
           positions[line.age * 3] = nextposition.x;
           positions[line.age * 3 + 1] = nextposition.z;
           positions[line.age * 3 + 2] = nextposition.y;
-          let v = Math.sqrt(nextposition.u ** 2 + nextposition.v ** 2);
+          let v = Math.sqrt(nextposition.u ** 2 + nextposition.v ** 2 + nextposition.w ** 2);
           let color =
             colorbar[
               Math.round(
@@ -734,13 +734,13 @@ class Home extends Component {
 
   async componentDidMount() {
     var { quadtreeSensitivity, lake, timeout } = this.state;
-    //var data = await this.downloadLake(lake);
+    var data = await this.downloadLake(lake);
     
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
-    //this.processData(quadtreeSensitivity, data);
-    var data2 = await this.downloadLake("tornando2");
-    this.streamlines = new StreamLines(data2.grid, data2.bounds, this.scene)
+    this.processData(quadtreeSensitivity, data);
+    //var data2 = await this.downloadLake("tornando2");
+    //this.streamlines = new StreamLines(data2.grid, data2.bounds, this.scene)
     /*setTimeout(() => {
       this.updateData();
     }, timeout);*/
