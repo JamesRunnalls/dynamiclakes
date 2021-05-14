@@ -5,18 +5,25 @@ class StreamLines {
     this.data = this.verfiyData(data);
     this.bounds = this.computeBounds(data, bounds);
     this.scene = scene;
-    this.noParticles = options.noParticles || 5000;
+    this.noParticles = options.noParticles || 10000;
     this.maxAge = options.maxAge || 200;
     this.fadeOutPercentage = options.fadeOutPercentage || 0.1;
-    this.velocityFactor = options.velocityFactor || 2;
+    this.individualColors = options.individualColors || 100;
+    this.velocityFactor = options.velocityFactor || 0.1;
+    this.min = options.min || 0;
+    this.max = options.max || 1;
+    this.colorSource = options.colorSource || "mag";
     this.colors = options.colors || [
       { color: "#000000", point: 0.0 },
+      { color: "#550088", point: 0.14285714285714285 },
+      { color: "#0000ff", point: 0.2857142857142857 },
+      { color: "#00ffff", point: 0.42857142857142855 },
+      { color: "#00ff00", point: 0.5714285714285714 },
+      { color: "#ffff00", point: 0.7142857142857143 },
+      { color: "#ff8c00", point: 0.8571428571428571 },
       { color: "#ff0000", point: 1.0 },
     ];
     this.fadeOut = Math.round(this.maxAge * this.fadeOutPercentage);
-
-    this.minMax = options.minMax || this.getMinMax();
-
     this.updateColors(this.colors);
     this.getValidCells();
     this.add();
@@ -27,25 +34,13 @@ class StreamLines {
   };
 
   computeBounds = (data, bounds) => {
-    bounds["yLen"] = data.length;
-    bounds["xLen"] = data[0].length;
-    bounds["zLen"] = data[0][0].length;
+    bounds["yLen"] = data.u.length;
+    bounds["xLen"] = data.u[0].length;
+    bounds["zLen"] = data.u[0][0].length;
     bounds["ySize"] = (bounds["yMax"] - bounds["yMin"]) / bounds["yLen"];
     bounds["xSize"] = (bounds["xMax"] - bounds["xMin"]) / bounds["xLen"];
     bounds["zSize"] = (bounds["zMax"] - bounds["zMin"]) / bounds["zLen"];
     return bounds;
-  };
-
-  getMinMax = () => {
-    var max = -Infinity;
-    var min = Infinity;
-    for (let i = 0; i < this.bounds["yLen"]; i++) {
-      for (let j = 0; j < this.bounds["xLen"]; j++) {
-        max = Math.max(max, Math.max(...this.data[i][j].flat(Infinity)));
-        min = Math.min(min, Math.min(...this.data[i][j].flat(Infinity)));
-      }
-    }
-    return [min, max];
   };
 
   getValidCells = () => {
@@ -54,9 +49,9 @@ class StreamLines {
       for (let j = 0; j < this.bounds["xLen"]; j++) {
         for (let k = 0; k < this.bounds["zLen"]; k++) {
           if (
-            this.data[i][j][k][0] !== null &&
-            this.data[i][j][k][1] !== null &&
-            this.data[i][j][k][2] !== null
+            this.data.u[i][j][k][0] !== null &&
+            this.data.u[i][j][k][1] !== null &&
+            this.data.u[i][j][k][2] !== null
           ) {
             this.validCells.push([i, j, k]);
           }
@@ -123,18 +118,19 @@ class StreamLines {
         Math.round((this.maxAge - this.fadeOut) * Math.random()) + this.fadeOut;
       this.streamlines.add(line);
     }
+    this.initialPositions();
     this.scene.add(this.streamlines);
   };
 
   initialPositions = () => {
-    var pl = this.randomPick.length - 1;
+    var pl = this.validCells.length - 1;
     for (var i = 0; i < this.streamlines.children.length; i++) {
       let line = this.streamlines.children[i];
-      let pick = this.randomPick[Math.round(pl * Math.random())];
+      let pick = this.validCells[Math.round(pl * Math.random())];
       let positions = line.geometry.attributes.position.array;
       positions[0] = this.bounds.xMin + this.bounds.xSize * pick[1]; // x
       positions[1] = this.bounds.zMin + this.bounds.zSize * pick[2]; // z
-      positions[2] = -this.bounds.yMin + this.bounds.ySize * pick[0]; // -y
+      positions[2] = this.bounds.yMin + this.bounds.ySize * pick[0]; // y
       positions[3] = positions[0];
       positions[4] = positions[1];
       positions[5] = positions[2];
@@ -143,7 +139,7 @@ class StreamLines {
   };
 
   animate = () => {
-    var pl = this.randomPick.length - 1;
+    var pl = this.validCells.length - 1;
     for (var i = 0; i < this.streamlines.children.length; i++) {
       let line = this.streamlines.children[i];
       let positions = line.geometry.attributes.position.array;
@@ -163,14 +159,17 @@ class StreamLines {
           let v = Math.sqrt(
             nextposition.u ** 2 + nextposition.v ** 2 + nextposition.w ** 2
           );
-          let color = this.colorbar[
-            Math.round(
-              ((v - this.minMax[0]) / (this.minMax[1] - this.minMax[0])) * 100
-            )
-          ];
+          let color =
+            this.colorBar[
+              Math.min(
+                this.individualColors,
+                Math.round(((v - this.min) / (this.max - this.min)) * 100)
+              )
+            ];
           colors[line.age * 4 - 4] = color[0];
           colors[line.age * 4 - 3] = color[1];
           colors[line.age * 4 - 2] = color[2];
+
           for (let c = 1; c < line.age; c++) {
             colors[c * 4 - 1] = Math.exp(1 - 1 / (c / line.age) ** 2);
           }
@@ -196,10 +195,10 @@ class StreamLines {
         line.maxAge =
           Math.round((this.maxAge - this.fadeOut) * Math.random()) +
           this.fadeOut;
-        let pick = this.randomPick[Math.round(pl * Math.random())];
+        let pick = this.validCells[Math.round(pl * Math.random())];
         positions[0] = this.bounds.xMin + this.bounds.xSize * pick[1]; // x
         positions[1] = this.bounds.zMin + this.bounds.zSize * pick[2]; // z
-        positions[2] = -this.bounds.yMin + this.bounds.ySize * pick[0]; // -y
+        positions[2] = this.bounds.yMin + this.bounds.ySize * pick[0]; // y
         positions[3] = positions[0];
         positions[4] = positions[1];
         positions[5] = positions[2];
@@ -224,13 +223,13 @@ class StreamLines {
       j < this.bounds["xLen"] &&
       k > -1 &&
       k < this.bounds["zLen"] &&
-      this.data[i][j][k][0] !== null
+      this.data.u[i][j][k] !== null
     ) {
-      var u = this.data[i][j][k][0];
-      var v = this.data[i][j][k][1];
-      var w = this.data[i][j][k][2];
+      var u = this.data.u[i][j][k];
+      var v = this.data.v[i][j][k];
+      var w = this.data.w[i][j][k];
       var x = xin + u * this.velocityFactor;
-      var y = yin + -v * this.velocityFactor;
+      var y = yin + v * this.velocityFactor;
       var z = zin + w * this.velocityFactor;
       return { x, y, z, u, v, w };
     } else {
@@ -288,11 +287,12 @@ class StreamLines {
 
   updateColors = (colors) => {
     var colorBar = [];
-    for (let i = 0; i < 101; i++) {
+    for (let i = 0; i < this.individualColors + 1; i++) {
       colorBar.push(this.getBinaryColor(i, 0, 99, colors));
     }
     this.colors = colors;
     this.colorBar = colorBar;
+    console.log(colorBar);
   };
 }
 

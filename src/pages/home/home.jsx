@@ -7,9 +7,8 @@ import colorlist from "../../components/colors/colors";
 import { getBinaryColor } from "../../components/gradients/gradients";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import ColorRamp from "../../components/colors/colorramp";
-//import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 import git from "./img/git.png";
-import StreamLines from "../../components/3dstreamlines/3dstreamlines"
 import playIcon from "./img/play.png";
 import pauseIcon from "./img/pause.png";
 import "./css/home.css";
@@ -376,8 +375,8 @@ class Home extends Component {
     var light = new THREE.AmbientLight(0x404040);
     this.scene.add(light);
 
-    //this.stats = new Stats();
-    //document.body.appendChild(this.stats.domElement);
+    this.stats = new Stats();
+    document.body.appendChild(this.stats.domElement);
   };
 
   addMesh = () => {
@@ -645,7 +644,7 @@ class Home extends Component {
     this.updatePositions();
     this.renderer.render(this.scene, this.camera);
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop);
-    //this.stats.update();
+    this.stats.update();
   };
 
   processData = async (quadtreeSensitivity, data) => {
@@ -734,13 +733,10 @@ class Home extends Component {
 
   async componentDidMount() {
     var { quadtreeSensitivity, lake, timeout } = this.state;
-    //var data = await this.downloadLake(lake);
-    
+    var data = await this.downloadLake(lake);
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
-    //this.processData(quadtreeSensitivity, data);
-    var data2 = await this.downloadLake("tornando2");
-    this.streamlines = new StreamLines(data2.grid, data2.bounds, this.scene)
+    this.processData(quadtreeSensitivity, data);
     /*setTimeout(() => {
       this.updateData();
     }, timeout);*/
